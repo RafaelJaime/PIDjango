@@ -8,9 +8,11 @@ from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
-from .serializer import UserSerializer
+
+from .serializer import UserSerializer, ArticleSerializer, EventSerializer
 
 from account.models import User
+from .models import Article, Event
 # Create your views here.
 
 
@@ -51,7 +53,8 @@ class User_API(APIView):
 
 class TestView(APIView):
     def get(self, request, format=None):
-        return Response({'detail': "GET Response"})
+        articles = ArticleSerializer(Article.objects.all(), many = True)
+        return Response({'detail': "GET Response", 'objects' : articles.data})
 
     def post(self, request, format=None):
         try:
@@ -69,3 +72,5 @@ class TestView(APIView):
             return Response({'successful': True, 'detail': 'POST answer', 'token': token[0].key})
         else:
             return Response('Not enought permisson, just superuser can get this information', status=status.HTTP_401_UNAUTHORIZED)
+
+# Prueba
