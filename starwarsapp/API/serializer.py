@@ -31,3 +31,14 @@ class ArticleSerializer(serializers.Serializer):
         model = Article
         fields = ['__all__']
 
+class ArticlesSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only= True)
+
+    # def validate(self, serie: Dict[str, str]):
+    #     if not serie.get('title'):
+    #         raise ValidationError('Title is mandatory')
+    #     return serie
+
+    class Meta:
+        model = Article
+        fields = '__all__'

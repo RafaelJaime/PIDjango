@@ -6,10 +6,11 @@ from rest_framework.response import Response
 
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.decorators import permission_classes
+from rest_framework import viewsets
 
-from .serializer import UserSerializer, ArticleSerializer, EventSerializer
+from .serializer import UserSerializer, ArticleSerializer, EventSerializer, ArticlesSerializer
 
 from account.models import User
 from .models import Article, Event
@@ -55,7 +56,6 @@ class TestView(APIView):
     def get(self, request, format=None):
         articles = ArticleSerializer(Article.objects.all(), many = True)
         return Response({'detail': "GET Response", 'objects' : articles.data})
-
     def post(self, request, format=None):
         try:
             data = request.data
@@ -73,4 +73,17 @@ class TestView(APIView):
         else:
             return Response('Not enought permisson, just superuser can get this information', status=status.HTTP_401_UNAUTHORIZED)
 
-# Prueba
+class AccountViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    
+    def list(self, request):
+        articles = ArticlesSerializer(article.objects.all(), many=True)
+        return Response(data= series.data, status= status.HTTP_200_OK)
+    def retrieve(self, request, pk: int):
+        article = ArticlesSerializer(article.objects.get(pk= pk))
+        return Response(data= series.data, status= status.HTTP_200_OK)
+    def create(self, request):
+        article = ArticlesSerializer(data = request.POST)
+        article.is_valid(raise_exception= True)
+        article.objects.create(title=article.validated_data['title'], description=article.validated_data['description'])
+        return self.list(request)

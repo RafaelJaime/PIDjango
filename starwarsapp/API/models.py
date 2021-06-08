@@ -3,7 +3,7 @@ from django.conf import settings
 from account.models import User
 
 # 1h 2h en total
-# Create your models here.
+# TABBAR
 # Primera pantalla (Noticias)
 class Article(models.Model):
     title = models.CharField(max_length = 200)
@@ -12,6 +12,7 @@ class Article(models.Model):
     content = models.TextField()
     event = models.ForeignKey("API.Event", on_delete=models.CASCADE, blank = True, null = True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+
     def __str__(self):
         return self.title
 
@@ -33,11 +34,11 @@ class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
 
 class Answer(models.Model):
-    answer = title = models.CharField(max_length = 200)
+    answer = models.CharField(max_length = 200)
     post = models.ForeignKey(Post, on_delete = models.CASCADE)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
         
-# Tercera pantalla
+# Tercera pantalla (Producto)
 class Product(models.Model):
     name = models.CharField(max_length = 100)
     price = models.DecimalField(max_digits = 10, decimal_places = 2)
@@ -48,4 +49,56 @@ class Product(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image = models.ImageField(upload_to = "Products/")
     can_send = models.BooleanField(default = False)
-    
+    is_selled = models.BooleanField(default = False)
+
+# Cuarta pantalla (Chat)
+
+# Ranking
+class Ranking(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    film = models.ForeignKey("Film", on_delete = models.CASCADE)
+    rank = models.IntegerField()
+    class Meta:
+        unique_together = (("author", "film"),)
+        
+# Peliculas
+class Film(models.Model):
+    title = models.CharField(max_length = 100)
+    director = models.CharField(max_length = 100)
+    producer = models.CharField(max_length = 100)
+    release_date = models.DateField()
+    characters = models.ManyToManyField("Character", related_name='characters', blank = True)
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, blank = True)
+    # is_canon = models.BooleanField(default = True)
+class FilmCommentary(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    film = models.ForeignKey("Film", on_delete = models.CASCADE)
+    commentary = models.CharField(max_length = 200)
+    class Meta:
+        unique_together = (("author", "film"),)
+
+# Personajes
+class Character(models.Model):
+    name = models.CharField(max_length = 100)
+    image = models.ImageField(upload_to = "Characters/", blank = True)
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, blank = True)
+
+class CharacterCommentary(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    character = models.ForeignKey("Character", on_delete = models.CASCADE)
+    commentary = models.CharField(max_length = 200)
+    class Meta:
+        unique_together = (("character", "author"),)
+
+# General
+# Onboarding
+class Onboarding(models.Model):
+    class OnboardingType(models.IntegerChoices):
+        forRegisterUser = 1
+        forNonRegisterUser = 2
+        forNewsPaperMansUser = 3
+        forAllUser = 4
+    title = models.CharField(max_length = 100)
+    image = models.ImageField(upload_to = "Onboarding/")
+    forUsers = models.IntegerField(choices = OnboardingType.choices)
+    showedTo = models.ManyToManyField(settings.AUTH_USER_MODEL, blank = True)
