@@ -7,9 +7,9 @@ class User(AbstractUser):
     is_newsPaperman = models.BooleanField(default=False)
     favorite_films = models.ManyToManyField("API.Film", blank = True)
     favorite_characters = models.ManyToManyField("API.Character", blank = True)
-
+    verified_email = models.BooleanField(default=False)
     def __str__(self):
-        return self.first_name + ' ' + self.last_name
+        return self.username
 
 class UserCalification(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, related_name = 'User')

@@ -10,8 +10,9 @@ class Article(models.Model):
     image = models.ImageField(upload_to = "Articles/", blank = True)
     subtitle = models.TextField(blank = True)
     content = models.TextField()
-    event = models.ForeignKey("API.Event", on_delete=models.CASCADE, blank = True, null = True)
+    created_at = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    event = models.ForeignKey("API.Event", on_delete=models.CASCADE, blank = True, null = True)
 
     def __str__(self):
         return self.title
@@ -21,7 +22,7 @@ class Event(models.Model):
     image = models.ImageField(upload_to = "Events/", blank = True)
     latitude = models.DecimalField(max_digits = 30, decimal_places = 15, blank = True, null = True)
     longitude = models.DecimalField(max_digits = 30, decimal_places = 15, blank = True, null = True)
-    telephone = models.DecimalField(max_digits = 30, decimal_places = 15, blank = True, null = True)
+    telephone = models.DecimalField(max_digits = 15, decimal_places = 15, blank = True, null = True)
     email = models.EmailField(max_length = 254, default = None)
     description = models.TextField(blank = True)
     startDate = models.DateField(auto_now = False, auto_now_add = False)
@@ -59,17 +60,20 @@ class Ranking(models.Model):
     film = models.ForeignKey("Film", on_delete = models.CASCADE)
     rank = models.IntegerField()
     class Meta:
-        unique_together = (("author", "film"),)
+        unique_together = (("film", "author"),)
         
 # Peliculas
 class Film(models.Model):
     title = models.CharField(max_length = 100)
     director = models.CharField(max_length = 100)
     producer = models.CharField(max_length = 100)
+    sipnosis = models.TextField()
+    image = models.ImageField(upload_to = "Films/", blank = True)
     release_date = models.DateField()
     characters = models.ManyToManyField("Character", related_name='characters', blank = True)
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL, blank = True)
     # is_canon = models.BooleanField(default = True)
+    
 class FilmCommentary(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
     film = models.ForeignKey("Film", on_delete = models.CASCADE)
@@ -80,6 +84,8 @@ class FilmCommentary(models.Model):
 # Personajes
 class Character(models.Model):
     name = models.CharField(max_length = 100)
+    actor = models.CharField(max_length = 100)
+    biography = models.TextField()
     image = models.ImageField(upload_to = "Characters/", blank = True)
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL, blank = True)
 

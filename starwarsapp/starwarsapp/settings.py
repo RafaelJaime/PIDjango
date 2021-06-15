@@ -134,7 +134,7 @@ AUTH_USER_MODEL = 'account.User'
 # Variables de CORS
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
-    'http://localhost:8000',
+    'http://localhost:9595',
 )
 
 # API TOKEN
@@ -144,6 +144,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
@@ -154,3 +155,9 @@ JWT_AUTH = {
     # Tiempo que dura el token
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=3),
 }
+# EMAIL
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'chimpancesjaimecamero@gmail.com'
+EMAIL_HOST_PASSWORD = 'jaimecamerochimpances'
+EMAIL_USE_TLS = True

@@ -15,7 +15,8 @@ class UserAdmin(BaseUserAdmin):
                 'fields': (
                     'is_newsPaperman',
                     'favorite_films',
-                    'favorite_characters'
+                    'favorite_characters',
+                    'verified_email'
                 ),
             },
         ),
