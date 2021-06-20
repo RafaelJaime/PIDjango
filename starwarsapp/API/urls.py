@@ -45,4 +45,11 @@ urlpatterns = [
         'put': 'update',
         'patch': 'partial_update',
         'delete': 'destroy'})),
+    path('event', views.EventViewSet.as_view({
+        'get': 'list',
+        'post': 'create',
+        'put': 'update',
+        'patch': 'partial_update',
+        'delete': 'destroy'})),
+    path('joinevent', views.EventView.as_view()),
 ]

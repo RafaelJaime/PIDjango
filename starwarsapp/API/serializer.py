@@ -10,17 +10,10 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class EventSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    title = serializers.CharField()
-    description = serializers.CharField()
-    latitude = serializers.DecimalField(max_digits=30, decimal_places=15)
-    longitude = serializers.DecimalField(max_digits=30, decimal_places=15)
-    telephone = serializers.DecimalField(max_digits=30, decimal_places=15)
-    email = serializers.EmailField()
-    startDate = serializers.DateField()
-    endDate = serializers.DateField()
-    participants = serializers.PrimaryKeyRelatedField(
-        many=True, read_only=True)
+    class Meta:
+        model = Event
+        fields = ['__all__']
+        depth = 2
 
 
 class ArticleSerializer(serializers.Serializer):

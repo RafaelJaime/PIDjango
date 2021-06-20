@@ -22,7 +22,7 @@ class Event(models.Model):
     image = models.ImageField(upload_to = "Events/", blank = True)
     latitude = models.DecimalField(max_digits = 30, decimal_places = 15, blank = True, null = True)
     longitude = models.DecimalField(max_digits = 30, decimal_places = 15, blank = True, null = True)
-    telephone = models.DecimalField(max_digits = 15, decimal_places = 15, blank = True, null = True)
+    telephone = models.DecimalField(max_digits = 15, decimal_places = 0, blank = True, null = True)
     email = models.EmailField(max_length = 254, default = None)
     description = models.TextField(blank = True)
     startDate = models.DateField(auto_now = False, auto_now_add = False)

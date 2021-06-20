@@ -116,28 +116,36 @@ class ArticleViewSet(viewsets.ViewSet):
         return Response(data=articles.data, status=status.HTTP_200_OK)
 
     def retrieve(self, request, pk: int):
-        article = ArticlesSerializer(Article.objects.get(pk=pk))
-        return Response(data=series.data, status=status.HTTP_200_OK)
-
+        pass
+    
     def create(self, request):
-        article = ArticlesSerializer(data=request.POST)
-        article.is_valid(raise_exception=True)
-        article.objects.create(
-            title=article.validated_data['title'], description=article.validated_data['description'])
-        return self.list(request)
+        try:
+            data = request.data
+        except ParseError as error:
+            return Response('Invaled JSON - {0}'.format(error.detail), status=status.HTTP_404_NOT_FOUND)
+        if "title" not in data or "subtitle" not in data or "content" not in data or "author" not in data:
+            return Response('Wrong credentials', status=status.HTTP_401_UNAUTHORIZED)
+        user = get_object_or_404(User, id=data['author'])
+        character = Article.objects.create(title=data['title'], subtitle= data['subtitle'], content = data['content'], author = user)
+        character.save()
+        return Response({"success": True})
 
     def update(self, request):
-        articles = ArticlesSerializer(Article.objects.all(), many=True)
-        return Response(data=articles.data, status=status.HTTP_200_OK)
+        pass
 
     def partial_update(self, request):
-        articles = ArticlesSerializer(Article.objects.all(), many=True)
-        return Response(data=articles.data, status=status.HTTP_200_OK)
+        pass
 
-    def destroy(self, request, pk):
-        article = self.get_object(pk)
+    def destroy(self, request):
+        try:
+            data = request.data
+        except ParseError as error:
+            return Response('Invaled JSON - {0}'.format(error.detail), status=status.HTTP_404_NOT_FOUND)
+        if "id" not in data :
+            return Response('ID needed', status=status.HTTP_401_UNAUTHORIZED)
+        article = Article.objects.get(id=data["id"])
         article.delete()
-        return Response(status=status.HTTP_200_OK)
+        return Response({"success": True}, status=status.HTTP_200_OK)
 
 
 class FilmViewSet(viewsets.ViewSet):
@@ -151,23 +159,32 @@ class FilmViewSet(viewsets.ViewSet):
         pass
 
     def create(self, request):
-        article = ArticlesSerializer(data=request.POST)
-        article.is_valid(raise_exception=True)
-        article.objects.create(
-            title=article.validated_data['title'], description=article.validated_data['description'])
-        return self.list(request)
+        try:
+            data = request.data
+        except ParseError as error:
+            return Response('Invaled JSON - {0}'.format(error.detail), status=status.HTTP_404_NOT_FOUND)
+        if "title" not in data or "director" not in data or "producer" not in data or "sipnosis" not in data or "release_date" not in data:
+            return Response('Wrong credentials', status=status.HTTP_401_UNAUTHORIZED)
+        character = Film.objects.create(title=data['title'], director= data['director'], producer = data['producer'], sipnosis = data['sipnosis'], release_date = data['release_date'])
+        character.save()
+        return Response({"success": True})
 
     def update(self, request):
-        articles = ArticlesSerializer(Article.objects.all(), many=True)
-        return Response(data=articles.data, status=status.HTTP_200_OK)
+        pass
 
     def partial_update(self, request):
-        articles = ArticlesSerializer(Article.objects.all(), many=True)
-        return Response(data=articles.data, status=status.HTTP_200_OK)
+        pass
 
     def destroy(self, request):
-        articles = ArticlesSerializer(Article.objects.all(), many=True)
-        return Response(data=articles.data, status=status.HTTP_200_OK)
+        try:
+            data = request.data
+        except ParseError as error:
+            return Response('Invaled JSON - {0}'.format(error.detail), status=status.HTTP_404_NOT_FOUND)
+        if "id" not in data :
+            return Response('ID needed', status=status.HTTP_401_UNAUTHORIZED)
+        article = Film.objects.get(id=data["id"])
+        article.delete()
+        return Response({"success": True}, status=status.HTTP_200_OK)
 
 
 class CharacterViewSet(viewsets.ViewSet):
@@ -181,23 +198,32 @@ class CharacterViewSet(viewsets.ViewSet):
         pass
 
     def create(self, request):
-        article = ArticlesSerializer(data=request.POST)
-        article.is_valid(raise_exception=True)
-        article.objects.create(
-            title=article.validated_data['title'], description=article.validated_data['description'])
-        return self.list(request)
+        try:
+            data = request.data
+        except ParseError as error:
+            return Response('Invaled JSON - {0}'.format(error.detail), status=status.HTTP_404_NOT_FOUND)
+        if "name" not in data or "actor" not in data or "biography" not in data:
+            return Response('Wrong credentials', status=status.HTTP_401_UNAUTHORIZED)
+        character = Character.objects.create(name=data['name'], actor= data['actor'], biography = data['biography'])
+        character.save()
+        return Response({"success": True})
 
     def update(self, request):
-        articles = ArticlesSerializer(Article.objects.all(), many=True)
-        return Response(data=articles.data, status=status.HTTP_200_OK)
+        pass
 
     def partial_update(self, request):
-        articles = ArticlesSerializer(Article.objects.all(), many=True)
-        return Response(data=articles.data, status=status.HTTP_200_OK)
+        pass
 
     def destroy(self, request):
-        articles = ArticlesSerializer(Article.objects.all(), many=True)
-        return Response(data=articles.data, status=status.HTTP_200_OK)
+        try:
+            data = request.data
+        except ParseError as error:
+            return Response('Invaled JSON - {0}'.format(error.detail), status=status.HTTP_404_NOT_FOUND)
+        if "id" not in data :
+            return Response('ID needed', status=status.HTTP_401_UNAUTHORIZED)
+        article = Character.objects.get(id=data["id"])
+        article.delete()
+        return Response({"success": True}, status=status.HTTP_200_OK)
 
 
 class RankingViewSet(viewsets.ViewSet):
@@ -227,16 +253,13 @@ class RankingViewSet(viewsets.ViewSet):
         return Response({"success": True})
 
     def update(self, request):
-        articles = ArticlesSerializer(Article.objects.all(), many=True)
-        return Response(data=articles.data, status=status.HTTP_200_OK)
+        pass
 
     def partial_update(self, request):
-        articles = ArticlesSerializer(Article.objects.all(), many=True)
-        return Response(data=articles.data, status=status.HTTP_200_OK)
+        pass
 
     def destroy(self, request):
-        articles = ArticlesSerializer(Article.objects.all(), many=True)
-        return Response(data=articles.data, status=status.HTTP_200_OK)
+        pass
 
 
 class PostViewSet(viewsets.ViewSet):
@@ -262,16 +285,21 @@ class PostViewSet(viewsets.ViewSet):
         return Response({"success": True})
 
     def update(self, request):
-        articles = ArticlesSerializer(Article.objects.all(), many=True)
-        return Response(data=articles.data, status=status.HTTP_200_OK)
+        pass
 
     def partial_update(self, request):
-        articles = ArticlesSerializer(Article.objects.all(), many=True)
-        return Response(data=articles.data, status=status.HTTP_200_OK)
+        pass
 
     def destroy(self, request):
-        articles = ArticlesSerializer(Article.objects.all(), many=True)
-        return Response(data=articles.data, status=status.HTTP_200_OK)
+        try:
+            data = request.data
+        except ParseError as error:
+            return Response('Invaled JSON - {0}'.format(error.detail), status=status.HTTP_404_NOT_FOUND)
+        if "id" not in data :
+            return Response('ID needed', status=status.HTTP_401_UNAUTHORIZED)
+        article = Post.objects.get(id=data["id"])
+        article.delete()
+        return Response({"success": True}, status=status.HTTP_200_OK)
 
 
 class AnswerViewSet(viewsets.ViewSet):
@@ -304,13 +332,81 @@ class AnswerViewSet(viewsets.ViewSet):
         return Response({"success": True})
 
     def update(self, request):
-        articles = ArticlesSerializer(Article.objects.all(), many=True)
-        return Response(data=articles.data, status=status.HTTP_200_OK)
+        pass
 
     def partial_update(self, request):
-        articles = ArticlesSerializer(Article.objects.all(), many=True)
-        return Response(data=articles.data, status=status.HTTP_200_OK)
+        pass
 
     def destroy(self, request):
-        articles = ArticlesSerializer(Article.objects.all(), many=True)
-        return Response(data=articles.data, status=status.HTTP_200_OK)
+        try:
+            data = request.data
+        except ParseError as error:
+            return Response('Invaled JSON - {0}'.format(error.detail), status=status.HTTP_404_NOT_FOUND)
+        if "id" not in data :
+            return Response('ID needed', status=status.HTTP_401_UNAUTHORIZED)
+        article = Answer.objects.get(id=data["id"])
+        article.delete()
+        return Response({"success": True}, status=status.HTTP_200_OK)
+
+class EventViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def list(self, request):
+        print(EventSerializer(Event.objects.all(), many=True).data)
+        posts = EventSerializer(Event.objects.all(), many=True)
+        return Response(data=posts.data, status=status.HTTP_200_OK)
+
+    def retrieve(self, request, pk: int):
+        pass
+
+    def create(self, request):
+        try:
+            data = request.data
+        except ParseError as error:
+            return Response('Invaled JSON - {0}'.format(error.detail), status=status.HTTP_404_NOT_FOUND)
+        if "title" not in data or "telephone" not in data or "email" not in data or "startDate" not in data or "endDate" not in data or "article" not in data:
+            return Response('fields required', status=status.HTTP_401_UNAUTHORIZED)
+        article = get_object_or_404(Article, id=data['article'])
+        event = Event.objects.create(title = data['title'], telephone = data['telephone'], email = data['email'], startDate = data['startDate'], endDate = data['endDate'])
+        event.save()
+        article.event = event
+        article.save()
+        return Response({"success": True}, status=status.HTTP_200_OK)
+
+    def update(self, request):
+        pass
+
+    def partial_update(self, request):
+        pass
+
+    def destroy(self, request):
+        try:
+            data = request.data
+        except ParseError as error:
+            return Response('Invaled JSON - {0}'.format(error.detail), status=status.HTTP_404_NOT_FOUND)
+        if "id" not in data :
+            return Response('ID needed', status=status.HTTP_401_UNAUTHORIZED)
+        article = Answer.objects.get(id=data["id"])
+        article.delete()
+        return Response({"success": True}, status=status.HTTP_200_OK)
+
+class EventView(APIView):
+    
+    permission_classes = [AllowAny]
+
+    def post(self, request, format=None):
+        try:
+            data = request.data
+        except ParseError as error:
+            return Response('Invaled JSON - {0}'.format(error.detail), status=status.HTTP_404_NOT_FOUND)
+        if "user" not in data or "event" not in data:
+            return Response('Wrong credentials', status=status.HTTP_401_UNAUTHORIZED)
+        event = get_object_or_404(Event, id=data['event'])
+        user = get_object_or_404(User, id=data['user'])
+        print(event.id)
+        print(user.id)
+        if user in event.participants.all():
+            event.participants.remove(user)
+        else:
+            event.participants.add(user)
+        return Response({"success": True}, status=status.HTTP_200_OK)
