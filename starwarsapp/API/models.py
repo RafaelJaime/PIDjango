@@ -11,8 +11,8 @@ class Article(models.Model):
     subtitle = models.TextField(blank = True)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
-    # event = models.ForeignKey("API.Event", on_delete=models.CASCADE, blank = True, null = True)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    event = models.ForeignKey("API.Event", on_delete=models.CASCADE, blank = True, null = True)
 
     def __str__(self):
         return self.title
@@ -32,12 +32,12 @@ class Event(models.Model):
 # Segunda pantalla (Foro)
 class Post(models.Model):
     title = models.CharField(max_length = 200)
-    # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
 
 class Answer(models.Model):
     answer = models.CharField(max_length = 200)
-    # post = models.ForeignKey(Post, on_delete = models.CASCADE)
-    # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    post = models.ForeignKey(Post, on_delete = models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
         
 # Tercera pantalla (Producto)
 class Product(models.Model):
@@ -47,7 +47,7 @@ class Product(models.Model):
     longitude = models.FloatField(blank = True, null = True)
     description = models.TextField()
     size = models.CharField(max_length = 50)
-    # owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image = models.ImageField(upload_to = "Products/")
     can_send = models.BooleanField(default = False)
     is_selled = models.BooleanField(default = False)
@@ -56,11 +56,11 @@ class Product(models.Model):
 
 # Ranking
 class Ranking(models.Model):
-    # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
-    # film = models.ForeignKey("Film", on_delete = models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    film = models.ForeignKey("Film", on_delete = models.CASCADE)
     rank = models.IntegerField()
-    # class Meta:
-    #     unique_together = (("film", "author"),)
+    class Meta:
+        unique_together = (("film", "author"),)
         
 # Peliculas
 class Film(models.Model):
@@ -75,11 +75,11 @@ class Film(models.Model):
     # is_canon = models.BooleanField(default = True)
     
 class FilmCommentary(models.Model):
-    # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
-    # film = models.ForeignKey("Film", on_delete = models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    film = models.ForeignKey("Film", on_delete = models.CASCADE)
     commentary = models.CharField(max_length = 200)
-    # class Meta:
-    #     unique_together = (("author", "film"),)
+    class Meta:
+        unique_together = (("author", "film"),)
 
 # Personajes
 class Character(models.Model):
@@ -90,11 +90,11 @@ class Character(models.Model):
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL, blank = True)
 
 class CharacterCommentary(models.Model):
-    # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
-    # character = models.ForeignKey("Character", on_delete = models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+    character = models.ForeignKey("Character", on_delete = models.CASCADE)
     commentary = models.CharField(max_length = 200)
-    # class Meta:
-    #     unique_together = (("character", "author"),)
+    class Meta:
+        unique_together = (("character", "author"),)
 
 # General
 # Onboarding
