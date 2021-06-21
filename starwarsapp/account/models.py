@@ -12,8 +12,8 @@ class User(AbstractUser):
         return self.username
 
 class UserCalification(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, related_name = 'User')
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, related_name='Author')
+    # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, related_name = 'User')
+    # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, related_name='Author')
     calification = models.DecimalField(max_digits = 2, decimal_places = 0)
     
     class Meta:
