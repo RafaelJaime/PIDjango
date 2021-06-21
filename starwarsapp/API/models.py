@@ -99,12 +99,6 @@ class CharacterCommentary(models.Model):
 # General
 # Onboarding
 class Onboarding(models.Model):
-    class OnboardingType(models.IntegerChoices):
-        forRegisterUser = 1
-        forNonRegisterUser = 2
-        forNewsPaperMansUser = 3
-        forAllUser = 4
     title = models.CharField(max_length = 100)
     image = models.ImageField(upload_to = "Onboarding/")
-    forUsers = models.IntegerField(choices = OnboardingType.choices)
     showedTo = models.ManyToManyField(settings.AUTH_USER_MODEL, blank = True)
