@@ -16,5 +16,5 @@ class UserCalification(models.Model):
     # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, related_name='Author')
     calification = models.DecimalField(max_digits = 2, decimal_places = 0)
     
-    class Meta:
-        unique_together = (("user", "author"),)
+    # class Meta:
+    #     unique_together = (("user", "author"),)
