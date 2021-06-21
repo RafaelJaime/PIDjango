@@ -59,8 +59,8 @@ class Ranking(models.Model):
     # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
     # film = models.ForeignKey("Film", on_delete = models.CASCADE)
     rank = models.IntegerField()
-    class Meta:
-        unique_together = (("film", "author"),)
+    # class Meta:
+    #     unique_together = (("film", "author"),)
         
 # Peliculas
 class Film(models.Model):
@@ -78,8 +78,8 @@ class FilmCommentary(models.Model):
     # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
     # film = models.ForeignKey("Film", on_delete = models.CASCADE)
     commentary = models.CharField(max_length = 200)
-    class Meta:
-        unique_together = (("author", "film"),)
+    # class Meta:
+    #     unique_together = (("author", "film"),)
 
 # Personajes
 class Character(models.Model):
@@ -93,8 +93,8 @@ class CharacterCommentary(models.Model):
     # author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
     # character = models.ForeignKey("Character", on_delete = models.CASCADE)
     commentary = models.CharField(max_length = 200)
-    class Meta:
-        unique_together = (("character", "author"),)
+    # class Meta:
+    #     unique_together = (("character", "author"),)
 
 # General
 # Onboarding
