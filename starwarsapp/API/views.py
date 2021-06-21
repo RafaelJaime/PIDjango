@@ -131,7 +131,18 @@ class ArticleViewSet(viewsets.ViewSet):
         return Response({"success": True})
 
     def update(self, request):
-        pass
+        try:
+            data = request.data
+        except ParseError as error:
+            return Response('Invaled JSON - {0}'.format(error.detail), status=status.HTTP_404_NOT_FOUND)
+        if "title" not in data or "subtitle" not in data or "content" not in data or "id" not in data:
+            return Response('Wrong credentials', status=status.HTTP_401_UNAUTHORIZED)
+        article = get_object_or_404(Article, id=data['id'])
+        article.title = data['title']
+        article.subtitle = data['subtitle']
+        article.content = data['content']
+        article.save()
+        return Response({"success": True})
 
     def partial_update(self, request):
         pass
@@ -170,7 +181,20 @@ class FilmViewSet(viewsets.ViewSet):
         return Response({"success": True})
 
     def update(self, request):
-        pass
+        try:
+            data = request.data
+        except ParseError as error:
+            return Response('Invaled JSON - {0}'.format(error.detail), status=status.HTTP_404_NOT_FOUND)
+        if "title" not in data or "director" not in data or "producer" not in data or "sipnosis" not in data or "release_date" not in data or "id" not in data:
+            return Response('Wrong credentials', status=status.HTTP_401_UNAUTHORIZED)
+        film = get_object_or_404(Film, id=data['id'])
+        film.title = data['title']
+        film.director = data['director']
+        film.producer = data['producer']
+        film.sipnosis = data['sipnosis']
+        film.release_date = data['release_date']
+        film.save()
+        return Response({"success": True})
 
     def partial_update(self, request):
         pass
@@ -209,7 +233,18 @@ class CharacterViewSet(viewsets.ViewSet):
         return Response({"success": True})
 
     def update(self, request):
-        pass
+        try:
+            data = request.data
+        except ParseError as error:
+            return Response('Invaled JSON - {0}'.format(error.detail), status=status.HTTP_404_NOT_FOUND)
+        if "name" not in data or "actor" not in data or "biography" not in data or "id" not in data:
+            return Response('Wrong credentials', status=status.HTTP_401_UNAUTHORIZED)
+        character = get_object_or_404(Character, id=data['id'])
+        character.name = data['name']
+        character.actor = data['actor']
+        character.biography = data['biography']
+        character.save()
+        return Response({"success": True})
 
     def partial_update(self, request):
         pass
